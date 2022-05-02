@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 
 const Task = (props) => {
+   
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
