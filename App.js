@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert,Keyboard } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert,Keyboard , FlatList} from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import Task from './components/Task';
@@ -128,12 +128,14 @@ const App = () => {
     <View style={styles.container}>
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
-        <ScrollView style={styles.items}>
 
-          {taskElements}
+        {/* ['anis','savon','test'] */}
+        <FlatList data={tasks} style={styles.items} renderItem={(itemData) => <Task onDelete={() => onDeleteHandler(itemData.index)} text={itemData.item} />} />
+
+          
 
 
-        </ScrollView>
+      
       </View>
 
       {/* coller içi */}
