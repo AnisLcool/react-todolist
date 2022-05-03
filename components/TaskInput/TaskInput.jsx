@@ -2,8 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Modal } from 'reac
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react'
 
-const TaskInput = ({ clickHandler }) => {
-    clickHandler
+const TaskInput = ({ clickHandler, showModal, hideModalHandler }) => {
     // separation of concerns
     const [taskValue, setTaskValue] = useState('');
     const onChangeHandler = (text) => {
@@ -15,15 +14,21 @@ const TaskInput = ({ clickHandler }) => {
         setTaskValue('');
     }
     return (
-        <Modal animationType='slide' visible={false}>
+        <Modal animationType='slide' visible={showModal}>
             <View style={styles.addTaskWrapper}>
                 {/* 1ere solution */}
                 {/* <TextInput style={styles.textInput} placeholder='write a task ...' onChangeText={(text) => setTaskValue(text)} /> */}
                 {/* 2eme solution */}
                 <TextInput value={taskValue} style={styles.textInput} placeholder='write a task ...' onChangeText={onChangeHandler} />
-                <TouchableOpacity style={styles.btnAdd} onPress={add}>
-                    <Entypo name='plus' size={30} color='#ccc' />
-                </TouchableOpacity>
+                <View style={styles.btnWrapper}>
+                    <TouchableOpacity style={styles.btnAdd} onPress={add}>
+                        <Entypo name='plus' size={30} color='#ccc' />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.btnAdd} onPress={hideModalHandler}>
+                        <Entypo name='cross' size={30} color='red' />
+                    </TouchableOpacity>
+                </View>
             </View>
         </Modal>
     )
@@ -33,12 +38,12 @@ export default TaskInput
 
 const styles = StyleSheet.create({
     addTaskWrapper: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         marginVertical: 20,
         marginHorizontal: 10,
-        // height:'30%'
+        flex: 1
     },
     textInput: {
         fontSize: 16,
@@ -55,6 +60,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.6,
         shadowRadius: 10,
         width: '80%',
+    },
+    btnWrapper:{
+        flexDirection:'row',
+        justifyContent:'space-around',
+        marginTop: 30
     },
     btnAdd: {
         marginHorizontal: 10,

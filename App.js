@@ -58,12 +58,19 @@ import TaskInput from './components/TaskInput/TaskInput';
 const App = () => {
 
   const [tasks, setTasks] = useState([]);
-
+  const [showModal, setShowModal] = useState(false);
   // diff entre onChange et onChangeText:
   // onChange: sa fonction handler recoit 'event', pour acceder à la valeur => event.target.value
   // onChangeText : sa fonction recoit le 'text'
 
 
+  const showModalHandler = () => {
+    setShowModal(true);
+  }
+
+  const hideModalHandler = () => {
+    setShowModal(false);
+  }
 
   const addTaskHandler = (value) => {
     // la taille de '' => 0 , la taille de '     ' => 5
@@ -72,7 +79,7 @@ const App = () => {
       return;
     }
     Keyboard.dismiss();
-
+    setShowModal(false);
     setTasks([...tasks, value]);
 
 
@@ -122,20 +129,16 @@ const App = () => {
         {/* itemData.item => 'anis' ou 'savon' ou 'test' ['anis','savon','test'] */}
         <FlatList data={tasks} style={styles.items} renderItem={(itemData) => <Task onDelete={() => onDeleteHandler(itemData.index)} text={itemData.item} />} />
 
-
-
-
-
       </View>
 
       <View style={styles.addGoalWrapper}>
-        <TouchableOpacity style={styles.addGoal}>
+        <TouchableOpacity onPress={showModalHandler} style={styles.addGoal}>
           <Text style={styles.addGoalText}>ADD</Text>
         </TouchableOpacity>
       </View>
 
 
-      <TaskInput clickHandler={addTaskHandler} />
+      <TaskInput showModal={showModal} clickHandler={addTaskHandler} hideModalHandler={hideModalHandler} />
 
     </View>
   )
