@@ -11,9 +11,13 @@ const Task = (props) => {
                 </TouchableOpacity>
                 <Text style={styles.itemText}>{props.text}</Text>
             </View>
-            <View style={styles.circle}>
+            {/* 1ere Façon */}
+            <TouchableOpacity style={styles.circle} onPress={props.onDelete}>
+                
+            {/* 2eme Façon */}
+            {/* <TouchableOpacity style={styles.circle} onPress={() => props.onDelete(props.index)}> */}
 
-            </View>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -29,6 +33,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
         marginTop: 20,
+        marginHorizontal:10,
         flexWrap: 'wrap'
     },
     itemLeft: {

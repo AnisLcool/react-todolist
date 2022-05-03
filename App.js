@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import {useState} from 'react';
+import { useState } from 'react';
 import Task from './components/Task';
 import FlexBox from './FlexBox';
 
@@ -55,33 +55,66 @@ import FlexBox from './FlexBox';
 // })
 
 const App = () => {
-   const [taskValue, setTaskValue] = useState('');
-   const [tasks, setTasks] = useState([]);
-  
-    const onChangeHandler = (text) => {
-      setTaskValue(text);
-    }
+  const [taskValue, setTaskValue] = useState('');
+  const [tasks, setTasks] = useState([]);
 
-    const fct2= () => {
-    }
+  // diff entre onChange et onChangeText:
+  // onChange: sa fonction handler recoit 'event', pour acceder à la valeur => event.target.value
+  // onChangeText : sa fonction recoit le 'text'
 
-    const addTaskHandler = () => {
-      // 1ere solution:
-      setTasks([...tasks, taskValue]);
-      // 2eme solution:
-      setTasks((prevTasks) => prevTasks.concat(taskValue))
+  const onChangeHandler = (text) => {
+    setTaskValue(text);
+  }
 
-    }
-    
+  const addTaskHandler = () => {
+    // 1ere solution:
+    setTasks([...tasks, taskValue]);
+    // 2eme solution:
+    // setTasks((prevTasks) => {
+    //   return [...prevTasks, taskValue];
+    // })
+    // 3eme solution
+    // setTasks((prevTasks) => {
+    //   return prevTasks.concat(taskValue);
+    // })
+    // 4eme solution
+    // setTasks((prevTasks) => prevTasks.concat(taskValue))
+
+
+    setTaskValue('');
+  }
+
+  const onDeleteHandler = (index) => {
+    // mutable way, immutable way
+    // pour supprimer un élément depuis un tableau : filter , splice , slice
+    // 1ere solution;
+    const newTasks = tasks.filter((element, idx) => idx !== index);
+    setTasks(newTasks);
+
+     // 2eme solution;
+    //  setTasks((prevTasks) => prevTasks.filter((element, idx) => idx !== index));
+
+  }
+
+
+ 
+  const taskElements = tasks.map((element, index) => {
+    // 1ere façon
+      return <Task onDelete={() => onDeleteHandler(index)} text={element} key={index} />
+    // 2eme façon
+
+      // return <Task index={index} onDelete={onDeleteHandler} text={element} key={index} />
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
         <ScrollView style={styles.items}>
 
-          <Task text='anis' />
-         
-        
+          {taskElements}
+          
+
         </ScrollView>
       </View>
 
@@ -106,10 +139,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E8EAED',
-    borderColor:'red',
+    borderColor: 'red',
     borderWidth: 3,
-    height:'100%',
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
   taskWrapper: {
     paddingTop: 80,
@@ -125,14 +157,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   items: {
-    flex: 1
+    // flex: 1
+    // height:'50%'
+    // padding: 10,
+    margin: 10,
+
   },
   // COLLER içi
   addTaskWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical:20,
+    marginVertical: 20,
     marginHorizontal: 10,
     // height:'30%'
   },
@@ -150,16 +186,16 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.6,
     shadowRadius: 10,
-    width:'80%',
+    width: '80%',
   },
-  btnAdd:{
+  btnAdd: {
     marginHorizontal: 10,
     borderRadius: 50,
     width: 50,
     height: 50,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
