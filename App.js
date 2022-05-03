@@ -4,6 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import Task from './components/Task';
 import FlexBox from './FlexBox';
+import TaskInput from './components/TaskInput/TaskInput';
 
 // ======================= INTRODUCTION =========================
 // export default function App() {
@@ -55,39 +56,28 @@ import FlexBox from './FlexBox';
 // })
 
 const App = () => {
-  const [taskValue, setTaskValue] = useState('');
+  
   const [tasks, setTasks] = useState([]);
 
   // diff entre onChange et onChangeText:
   // onChange: sa fonction handler recoit 'event', pour acceder à la valeur => event.target.value
   // onChangeText : sa fonction recoit le 'text'
 
-  const onChangeHandler = (text) => {
-    setTaskValue(text);
-  }
+ 
 
-  const addTaskHandler = () => {
+  const addTaskHandler = (value) => {
     // la taille de '' => 0 , la taille de '     ' => 5
     // '            '.trim() => '',         '         anis anis      '.trim() => 'anis';
-    if(taskValue.trim().length === 0){   
+    if(value.trim().length === 0){   
       return;
     }
     Keyboard.dismiss();
-    // 1ere solution:
-    setTasks([...tasks, taskValue]);
-    // 2eme solution:
-    // setTasks((prevTasks) => {
-    //   return [...prevTasks, taskValue];
-    // })
-    // 3eme solution
-    // setTasks((prevTasks) => {
-    //   return prevTasks.concat(taskValue);
-    // })
-    // 4eme solution
-    // setTasks((prevTasks) => prevTasks.concat(taskValue))
+   
+    setTasks([...tasks, value]);
+    
 
 
-    setTaskValue('');
+    
   }
 
   const onDeleteHandler = (index) => {
@@ -129,7 +119,7 @@ const App = () => {
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
 
-        {/* ['anis','savon','test'] */}
+        {/* itemData.item => 'anis' ou 'savon' ou 'test' ['anis','savon','test'] */}
         <FlatList data={tasks} style={styles.items} renderItem={(itemData) => <Task onDelete={() => onDeleteHandler(itemData.index)} text={itemData.item} />} />
 
           
@@ -139,15 +129,7 @@ const App = () => {
       </View>
 
       {/* coller içi */}
-      <View style={styles.addTaskWrapper}>
-        {/* 1ere solution */}
-        {/* <TextInput style={styles.textInput} placeholder='write a task ...' onChangeText={(text) => setTaskValue(text)} /> */}
-        {/* 2eme solution */}
-        <TextInput value={taskValue} style={styles.textInput} placeholder='write a task ...' onChangeText={onChangeHandler} />
-        <TouchableOpacity style={styles.btnAdd} onPress={addTaskHandler}>
-          <Entypo name='plus' size={30} color='#ccc' />
-        </TouchableOpacity>
-      </View>
+      <TaskInput clickHandler={addTaskHandler} />
       {/* ======================= */}
     </View>
   )
@@ -182,45 +164,6 @@ const styles = StyleSheet.create({
 
   },
   // COLLER içi
-  addTaskWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginVertical: 20,
-    marginHorizontal: 10,
-    // height:'30%'
-  },
-  textInput: {
-    fontSize: 16,
-    textAlign: 'center',
-    padding: 10,
-    borderColor: '#ccc',
-    backgroundColor: 'white',
-    borderRadius: 30,
-    shadowColor: 'grey',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 10,
-    width: '80%',
-  },
-  btnAdd: {
-    marginHorizontal: 10,
-    borderRadius: 50,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    shadowColor: 'grey',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.6,
-    shadowRadius: 10,
-  }
+  
   // ===============
 })
