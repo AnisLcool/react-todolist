@@ -1,29 +1,31 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import {Entypo} from '@expo/vector-icons';
-import React, {useState} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Modal } from 'react-native';
+import { Entypo } from '@expo/vector-icons';
+import React, { useState } from 'react'
 
-const TaskInput = ({clickHandler}) => {
+const TaskInput = ({ clickHandler }) => {
     clickHandler
     // separation of concerns
     const [taskValue, setTaskValue] = useState('');
     const onChangeHandler = (text) => {
         setTaskValue(text);
-      }
+    }
 
-      const add = () =>{
+    const add = () => {
         clickHandler(taskValue);
         setTaskValue('');
-      } 
+    }
     return (
-        <View style={styles.addTaskWrapper}>
-            {/* 1ere solution */}
-            {/* <TextInput style={styles.textInput} placeholder='write a task ...' onChangeText={(text) => setTaskValue(text)} /> */}
-            {/* 2eme solution */}
-            <TextInput value={taskValue} style={styles.textInput} placeholder='write a task ...' onChangeText={onChangeHandler} />
-            <TouchableOpacity style={styles.btnAdd} onPress={add}>
-                <Entypo name='plus' size={30} color='#ccc' />
-            </TouchableOpacity>
-        </View>
+        <Modal animationType='slide' visible={false}>
+            <View style={styles.addTaskWrapper}>
+                {/* 1ere solution */}
+                {/* <TextInput style={styles.textInput} placeholder='write a task ...' onChangeText={(text) => setTaskValue(text)} /> */}
+                {/* 2eme solution */}
+                <TextInput value={taskValue} style={styles.textInput} placeholder='write a task ...' onChangeText={onChangeHandler} />
+                <TouchableOpacity style={styles.btnAdd} onPress={add}>
+                    <Entypo name='plus' size={30} color='#ccc' />
+                </TouchableOpacity>
+            </View>
+        </Modal>
     )
 }
 

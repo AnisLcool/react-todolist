@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert,Keyboard , FlatList} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert, Keyboard, FlatList, Button } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import Task from './components/Task';
@@ -56,28 +56,28 @@ import TaskInput from './components/TaskInput/TaskInput';
 // })
 
 const App = () => {
-  
+
   const [tasks, setTasks] = useState([]);
 
   // diff entre onChange et onChangeText:
   // onChange: sa fonction handler recoit 'event', pour acceder à la valeur => event.target.value
   // onChangeText : sa fonction recoit le 'text'
 
- 
+
 
   const addTaskHandler = (value) => {
     // la taille de '' => 0 , la taille de '     ' => 5
     // '            '.trim() => '',         '         anis anis      '.trim() => 'anis';
-    if(value.trim().length === 0){   
+    if (value.trim().length === 0) {
       return;
     }
     Keyboard.dismiss();
-   
+
     setTasks([...tasks, value]);
-    
 
 
-    
+
+
   }
 
   const onDeleteHandler = (index) => {
@@ -122,33 +122,38 @@ const App = () => {
         {/* itemData.item => 'anis' ou 'savon' ou 'test' ['anis','savon','test'] */}
         <FlatList data={tasks} style={styles.items} renderItem={(itemData) => <Task onDelete={() => onDeleteHandler(itemData.index)} text={itemData.item} />} />
 
-          
 
 
-      
+
+
       </View>
 
-      {/* coller içi */}
+      <View style={styles.addGoalWrapper}>
+        <TouchableOpacity style={styles.addGoal}>
+          <Text style={styles.addGoalText}>ADD</Text>
+        </TouchableOpacity>
+      </View>
+
+
       <TaskInput clickHandler={addTaskHandler} />
-      {/* ======================= */}
+
     </View>
   )
 }
 
-export default App
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E8EAED',
-   
-    justifyContent: 'space-between'
+
   },
   taskWrapper: {
     paddingTop: 80,
     paddingVertical: 20,
     flex: 1,
-    
+
     // height:'70%'
   },
   sectionTitle: {
@@ -160,10 +165,26 @@ const styles = StyleSheet.create({
     // flex: 1
     // height:'50%'
     // padding: 10,
-    margin: 10,
+    marginTop: 10,
 
   },
-  // COLLER içi
-  
-  // ===============
+  addGoalWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 20
+  },
+  addGoal: {
+    backgroundColor: '#0069D9',
+    color: 'white',
+    width: "30%",
+    alignItems: 'center',
+    maxWidth: '80%',
+    marginHorizontal: 20,
+    borderRadius: 20,
+    padding: 10
+  },
+  addGoalText: {
+    color: 'white',
+    fontSize: 20,
+  }
 })
