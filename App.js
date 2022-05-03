@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Alert,Keyboard } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useState } from 'react';
 import Task from './components/Task';
@@ -67,6 +67,12 @@ const App = () => {
   }
 
   const addTaskHandler = () => {
+    // la taille de '' => 0 , la taille de '     ' => 5
+    // '            '.trim() => '',         '         anis anis      '.trim() => 'anis';
+    if(taskValue.trim().length === 0){   
+      return;
+    }
+    Keyboard.dismiss();
     // 1ere solution:
     setTasks([...tasks, taskValue]);
     // 2eme solution:
@@ -85,25 +91,37 @@ const App = () => {
   }
 
   const onDeleteHandler = (index) => {
-    // mutable way, immutable way
-    // pour supprimer un élément depuis un tableau : filter , splice , slice
-    // 1ere solution;
-    const newTasks = tasks.filter((element, idx) => idx !== index);
-    setTasks(newTasks);
+    // Alert.alert('titre','text de description','tableau d\'objets pour les boutton')
+    Alert.alert('Supprimer une tache', 'Vous etes sure?',
+      [
+        { text: 'Annuler', style: 'cancel', onPress: () => { } },
+        { text: 'Confirmer', style: 'default', onPress: () => deleteTask() }
+      ],
+    )
+    const deleteTask = () => {
+      // ajouter une fenetre de confirmation
+      // mutable way, immutable way
+      // pour supprimer un élément depuis un tableau : filter , splice , slice
+      // 1ere solution;
 
-     // 2eme solution;
-    //  setTasks((prevTasks) => prevTasks.filter((element, idx) => idx !== index));
+
+      // 2eme solution;
+      //  setTasks((prevTasks) => prevTasks.filter((element, idx) => idx !== index));
+      const newTasks = tasks.filter((element, idx) => idx !== index);
+      setTasks(newTasks);
+    }
+
 
   }
 
 
- 
+
   const taskElements = tasks.map((element, index) => {
     // 1ere façon
-      return <Task onDelete={() => onDeleteHandler(index)} text={element} key={index} />
+    return <Task onDelete={() => onDeleteHandler(index)} text={element} key={index} />
     // 2eme façon
 
-      // return <Task index={index} onDelete={onDeleteHandler} text={element} key={index} />
+    // return <Task index={index} onDelete={onDeleteHandler} text={element} key={index} />
   });
 
   return (
@@ -113,7 +131,7 @@ const App = () => {
         <ScrollView style={styles.items}>
 
           {taskElements}
-          
+
 
         </ScrollView>
       </View>
@@ -139,16 +157,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#E8EAED',
-    borderColor: 'red',
-    borderWidth: 3,
+   
     justifyContent: 'space-between'
   },
   taskWrapper: {
     paddingTop: 80,
     paddingVertical: 20,
     flex: 1,
-    borderColor: 'blue',
-    borderWidth: 3,
+    
     // height:'70%'
   },
   sectionTitle: {
